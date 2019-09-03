@@ -55,11 +55,7 @@ If not, inspect the logs for that container, e.g.:
 docker-compose logs wordpress
 ```
 
-Running `update.sh` again can also help resolve problems.
-
-If your self-signed certs have expired (`ERR_CERT_DATE_INVALID`), simply delete
-the `certs/self-signed` directory, run `./certs/create-certs.sh`, and restart
-the stack.
+Running `./bin/helpers/update_projects.sh` again can also help resolve problems.
 
 [vip-go]: https://vip.wordpress.com/documentation/vip-go/
 [photon]: https://jetpack.com/support/photon/
