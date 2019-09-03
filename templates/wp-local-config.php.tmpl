@@ -1,0 +1,35 @@
+<?php
+/**
+ * WordPress local config
+ *
+ * @package docker-wpcomvip
+ */
+
+// Conditionally turn on HTTPS since we're behind nginx-proxy.
+if ( isset( \$_SERVER['HTTP_X_FORWARDED_PROTO'] ) && 'https' === \$_SERVER['HTTP_X_FORWARDED_PROTO'] ) { // Input var ok.
+	\$_SERVER['HTTPS'] = 'on';
+}
+
+// Indicate VIP Go environment.
+define( 'VIP_GO_ENV', 'local' );
+
+/* Multisite */
+define('MULTISITE', true);
+define('SUBDOMAIN_INSTALL', false);
+define('DOMAIN_CURRENT_SITE', '${PROJECT_DOMAIN}');
+define('PATH_CURRENT_SITE', '/');
+define('SITE_ID_CURRENT_SITE', 1);
+define('BLOG_ID_CURRENT_SITE', 1);
+
+// Disable automatic updates.
+define( 'AUTOMATIC_UPDATER_DISABLED', true );
+
+// This provides the host and port of the development Memcached server. The host
+// should match the container name in `docker-compose.memcached.yml`. If you
+// aren't using Memcached, it will simply be ignored.
+\$memcached_servers = array(
+	array(
+		'memcached',
+		11211,
+	),
+);

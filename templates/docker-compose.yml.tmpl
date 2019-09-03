@@ -1,0 +1,74 @@
+version: '3.7'
+
+services:
+  photon:
+    image: chriszarate/photon:latest
+    container_name: $PROJECT_ID-photon
+  $PROJECT_ID-database:
+    image: mariadb:10.2
+    restart: always
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: \"yes\"
+      MYSQL_ROOT_PASSWORD: \"\"
+    ports:
+      - $PROJECT_DATABASE_PORT:3306
+    expose:
+      - $PROJECT_DATABASE_PORT
+    volumes:
+       -  $PROJECT_ID-database_data:/var/lib/mysql
+    container_name: $PROJECT_ID-database
+  wordpress:
+    image: \"wordpress:${WP_VERSION:-5.2.2}-php${PHP_VERSION:-7.2}-apache\"
+    environment:
+      VIRTUAL_HOST: \"$PROJECT_DOMAIN\"
+      HTTPS_METHOD: \"nohttps\"
+      WORDPRESS_DB_HOST: \"$PROJECT_ID-database:3306\"
+      WORDPRESS_DB_NAME: \"$PROJECT_ID\"
+      WORDPRESS_DB_USER: \"root\"
+      WORDPRESS_DB_PASSWORD: \"\"
+    depends_on:
+      - $PROJECT_ID-database
+    restart: always
+    volumes:
+      - "$PROJECT_ID-home:/var/www/html:rw"
+      - "./bin/php-local.ini:/usr/local/etc/php/conf.d/local.ini:ro"
+      - "./bin/wp-local-config.php:/usr/local/etc/php/autoprepend.php:ro"
+      - "./source/vip-go-mu-plugins:/var/www/html/wp-content/mu-plugins"
+      - "./source/content/client-mu-plugins:/var/www/html/wp-content/client-mu-plugins"
+      - "./source/content/images:/var/www/html/wp-content/images"
+      - "./source/content/languages:/var/www/html/wp-content/languages"
+      - "./source/content/plugins:/var/www/html/wp-content/plugins"
+      - "./source/content/private:/var/www/html/wp-content/private"
+      - "./source/content/themes:/var/www/html/wp-content/themes"
+      - "./source/content/vip-config:/var/www/html/wp-content/vip-config"
+    container_name: $PROJECT_ID-wordpress
+  wp-cli:
+    image: \"wordpress:cli-php${PHP_VERSION:-7.2}\"
+    environment:
+      - APACHE_RUN_USER=\"www-data\"
+      - APACHE_RUN_GROUP=\"www-data\"
+    depends_on:
+      - $PROJECT_ID-database
+    volumes:
+      - "$PROJECT_ID-home:/var/www/html:rw"
+      - "./bin/install-wp.sh:/usr/local/bin/install-wp:ro"
+      - "./bin/php-local.ini:/usr/local/etc/php/conf.d/local.ini:ro"
+      - "./bin/wp-local-config.php:/usr/local/etc/php/autoprepend.php:ro"
+      - "./source/vip-go-mu-plugins:/var/www/html/wp-content/mu-plugins"
+      - "./source/content/client-mu-plugins:/var/www/html/wp-content/client-mu-plugins"
+      - "./source/content/images:/var/www/html/wp-content/images"
+      - "./source/content/languages:/var/www/html/wp-content/languages"
+      - "./source/content/plugins:/var/www/html/wp-content/plugins"
+      - "./source/content/private:/var/www/html/wp-content/private"
+      - "./source/content/themes:/var/www/html/wp-content/themes"
+      - "./source/content/vip-config:/var/www/html/wp-content/vip-config"
+    container_name: $PROJECT_ID-wp-cli
+
+volumes:
+  $PROJECT_ID-home: {}
+  $PROJECT_ID-database_data: {}
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
