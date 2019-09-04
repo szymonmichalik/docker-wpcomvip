@@ -41,6 +41,7 @@ services:
       - "./source/content/private:/var/www/html/wp-content/private"
       - "./source/content/themes:/var/www/html/wp-content/themes"
       - "./source/content/vip-config:/var/www/html/wp-content/vip-config"
+      - "./source/uploads:/var/www/html/wp-content/uploads"
     container_name: $PROJECT_ID-wordpress
   wp-cli:
     image: \"wordpress:cli-php${PHP_VERSION:-7.2}\"
@@ -62,6 +63,7 @@ services:
       - "./source/content/private:/var/www/html/wp-content/private"
       - "./source/content/themes:/var/www/html/wp-content/themes"
       - "./source/content/vip-config:/var/www/html/wp-content/vip-config"
+      - "./source/uploads:/var/www/html/wp-content/uploads"
     container_name: $PROJECT_ID-wp-cli
 
 volumes:
