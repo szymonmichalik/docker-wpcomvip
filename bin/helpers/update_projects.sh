@@ -14,7 +14,6 @@ function update_projects() {
 
   # Make sure uploads directory exists.
   mkdir -p source/uploads
-  chmod +rw source/uploads
 
   # Clone git repos.
   for repo in \
