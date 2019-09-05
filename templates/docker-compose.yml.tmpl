@@ -38,7 +38,6 @@ services:
       - "./bin/php-local.ini:/usr/local/etc/php/conf.d/local.ini:ro"
       - "./bin/wp-local-config.php:/usr/local/etc/php/autoprepend.php:ro"
       - "./source/vip-go-mu-plugins:/var/www/html/wp-content/mu-plugins"
-      - "./source/vip-go-mu-plugins:/var/www/html/wp-content/mu-plugins"
       - "./source/content:/var/www/html/wp-content"
     container_name: $PROJECT_ID-wordpress
   wp-cli:
