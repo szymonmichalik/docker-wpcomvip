@@ -12,9 +12,6 @@ function update_projects() {
   # Make sure projects directory exists.
   mkdir -p source
 
-  # Make sure uploads directory exists.
-  mkdir -p source/uploads
-
   # Clone git repos.
   for repo in \
     ${PROJECT_REPO} \
