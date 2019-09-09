@@ -35,6 +35,7 @@ services:
     restart: always
     volumes:
       - "$PROJECT_ID-home:/var/www/html:rw"
+      - "./bin/.htaccess:/var/www/html/.htaccess:ro"
       - "./bin/php-local.ini:/usr/local/etc/php/conf.d/local.ini:ro"
       - "./bin/wp-local-config.php:/usr/local/etc/php/autoprepend.php:ro"
       - "./source/vip-go-mu-plugins:/var/www/html/wp-content/mu-plugins"
