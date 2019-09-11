@@ -15,7 +15,6 @@ function update_projects() {
   # Clone git repos.
   for repo in \
     ${PROJECT_REPO} \
-    Automattic/vip-go-mu-plugins \
     tollmanz/wordpress-pecl-memcached-object-cache
   do
     dir_name="${repo##*/}"

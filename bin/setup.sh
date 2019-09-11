@@ -18,8 +18,8 @@ fi
 source .env
 
 # include helpers
-. bin/helpers/render_template.sh
-. bin/helpers/update_projects.sh
+. helpers/render_template.sh
+. helpers/update_projects.sh
 
 
 echo "Creating directories..."
@@ -36,13 +36,21 @@ chmod +x ./docker-compose.yml
 if [ -f ./bin/wp-local-config.php ]; then
   echo "File \"wp-local-config.php\" exists, skipping."
 else
-  render_template ./templates/wp-local-config.php.tmpl > ./bin/wp-local-config.php
+  if [ "$PROJECT_IS_MULTISTE" == "1" ] || [ "$PROJECT_IS_MULTISTE" == "true" ] ; then
+    render_template ./templates/wp-local-config-mu.php.tmpl > ./bin/wp-local-config.php
+  else
+    render_template ./templates/wp-local-config.sh.tmpl > ./bin/wp-local-config.php
+  fi 
 fi
 
 if [ -f ./bin/install-wp.sh ]; then
     echo "File \"install-wp.sh\" exists, skipping."
 else
-  render_template ./templates/install-wp.sh.tmpl > ./bin/install-wp.sh
+  if [ "$PROJECT_IS_MULTISTE" == "1" ] || [ "$PROJECT_IS_MULTISTE" == "true" ] ; then
+    render_template ./templates/install-wp-mu.sh.tmpl > ./bin/install-wp.sh
+  else
+    render_template ./templates/install-wp.sh.tmpl > ./bin/install-wp.sh
+  fi
   chmod +x ./bin/install-wp.sh
 fi
 
@@ -63,5 +71,5 @@ echo "To start, run \`docker-compose start\`."
 echo "To stop, run \`docker-compose stop\`."
 echo "To prune, run \`docker system prune\`. Data will be lost."
 
-echo ""
-echo "To install WP Multisite network for every project, run \`docker-compose run --rm wp-cli install-wp\`"
+echo "You can continue your setup by running following commands:"
+echo "  \`docker-compose run --rm wp-cli install-wp-\`    install WordPress"
