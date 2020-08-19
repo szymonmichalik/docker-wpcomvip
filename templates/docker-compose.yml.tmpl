@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.8'
 
 services:
   photon:
@@ -18,7 +18,7 @@ services:
        -  $PROJECT_ID-database_data:/var/lib/mysql
     container_name: $PROJECT_ID-database
   wordpress:
-    image: \"wordpress:${WP_VERSION:-5.2.3}-php${PHP_VERSION:-7.3}-apache\"
+    image: \"wordpress:${WP_VERSION:-5.5.0}-php${PHP_VERSION:-7.3}-apache\"
     environment:
       VIRTUAL_HOST: \"$PROJECT_DOMAIN\"
       HTTPS_METHOD: \"nohttps\"
